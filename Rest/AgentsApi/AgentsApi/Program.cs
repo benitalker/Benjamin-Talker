@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using AgentsApi.Data;
+using AgentsApi.Service;
 
 namespace AgentsApi
 {
@@ -24,6 +25,8 @@ namespace AgentsApi
 					)
 				)
 			);
+
+			builder.Services.AddScoped<ITargetService, TargetService>();
 
 			var app = builder.Build();
 

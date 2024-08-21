@@ -9,6 +9,7 @@ namespace AgentsApi.Models
 			Alive,
 			dead
 		}
+
 		public long Id { get; set; }
 		[Required,StringLength(100,MinimumLength = 3)]
 		public required string Name { get; set; }
