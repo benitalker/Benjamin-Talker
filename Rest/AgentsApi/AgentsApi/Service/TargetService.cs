@@ -57,6 +57,44 @@ namespace AgentsApi.Service
 			await context.SaveChangesAsync();
 			return target;
 		}
+
+		public async Task UpdateTargetLocation(long id,PositionDto position)
+		{
+			TargetModel? target = await context.Targets.FirstOrDefaultAsync(t => t.Id == id);
+			if (target == null)
+			{
+				throw new Exception("Target not found");
+			}
+			target.X = position.X;
+			target.Y = position.Y;
+			await context.SaveChangesAsync();
+		}
+
+		public async Task MoveTarget(long id, DirectionsDto directionDto)
+		{
+			TargetModel? target = await context.Targets.FirstOrDefaultAsync(t => t.Id == id);
+			if (target == null)
+			{
+				throw new Exception("Target not found");
+			}
+			if(directionDto.direction.Contains("n"))
+			{
+				target.X -= 1;
+			}
+			if (directionDto.direction.Contains("s"))
+			{
+				target.X += 1;
+			}
+			if (directionDto.direction.Contains("e"))
+			{
+				target.Y -= 1;
+			}
+			if (directionDto.direction.Contains("w"))
+			{
+				target.X += 1;
+			}
+			await context.SaveChangesAsync();
+		}
 	}
 }
 

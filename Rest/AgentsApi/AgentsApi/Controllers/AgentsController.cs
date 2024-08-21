@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AgentsApi.Data;
+using AgentsApi.Dto;
+using AgentsApi.Models;
+using AgentsApi.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AgentsApi.Data;
-using AgentsApi.Models;
-using AgentsApi.Dto;
-using Microsoft.AspNetCore.Authorization;
-using AgentsApi.Service;
 
 namespace AgentsApi.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class TargetsController(ITargetService targetService) : ControllerBase
+	public class AgentsController(ApplicationDbContext _context, ITargetService targetService) : ControllerBase
 	{
-		// Post: api/Targets
+		// Post: api/Agents
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status201Created)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -33,7 +28,7 @@ namespace AgentsApi.Controllers
 			}
 		}
 
-		// GET: api/Targets
+		// GET: api/Agents
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<ActionResult<IEnumerable<TargetModel>>> GetTargets()
@@ -41,7 +36,7 @@ namespace AgentsApi.Controllers
 			return await targetService.GetTargetsAsync();
 		}
 
-		// GET: api/Targets/5
+		// GET: api/Agents/5
 		[HttpGet("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -57,12 +52,12 @@ namespace AgentsApi.Controllers
 			return targetModel;
 		}
 
-		// PUT: api/Targets/Update/5
-		[HttpPut("Update/{id}")]
+		// PUT: api/Agents/5
+		[HttpPut("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 
-		public async Task<ActionResult> PutTargetModel(long id, TargetModel targetModel)
+		public async Task<IActionResult> PutTargetModel(long id, TargetModel targetModel)
 		{
 			try
 			{
@@ -74,11 +69,11 @@ namespace AgentsApi.Controllers
 			}
 		}
 
-		// DELETE: api/Targets/5
+		// DELETE: api/Agents/5
 		[HttpDelete("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult> DeleteTargetModel(long id)
+		public async Task<IActionResult> DeleteTargetModel(long id)
 		{
 			var targetModel = await targetService.GetTargetByIdAsync(id);
 
@@ -91,38 +86,6 @@ namespace AgentsApi.Controllers
 				var target = await targetService.DeleteTargetAsync(id);
 				return Ok(target);
 			}
-		}
-
-		//PUT: /targets/{id}/pin
-		[HttpPut("{id}/pin")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult> TargetStartPosition(long id, [FromBody] PositionDto position)
-		{
-			var targetModel = await targetService.GetTargetByIdAsync(id);
-
-			if (targetModel == null)
-			{
-				return NotFound();
-			}
-			await targetService.UpdateTargetLocation(id, position);
-			return Ok();
-		}
-
-		//PUT:/targets/{id}/move
-		[HttpPut("{id}/move")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult> MoveTargetToDirection(long id, [FromBody] DirectionsDto direction)
-		{
-			var targetModel = await targetService.GetTargetByIdAsync(id);
-
-			if (targetModel == null)
-			{
-				return NotFound();
-			}
-			await targetService.MoveTarget(id, direction);
-			return Ok();
 		}
 	}
 }
