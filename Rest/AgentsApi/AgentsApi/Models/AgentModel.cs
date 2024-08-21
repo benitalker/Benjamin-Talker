@@ -1,4 +1,6 @@
-﻿namespace AgentsApi.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AgentsApi.Models
 {
 	public class AgentModel
 	{
@@ -8,9 +10,12 @@
 			Active
 		}
 		public long Id { get; set; }
-		public string Nickname { get; set; } = string.Empty;
-		public string Image { get; set; } = string.Empty;
-		public (int x, int y) Location { get; set; } = (-1, -1);
+		[Required, StringLength(100, MinimumLength = 3)]
+		public required string Nickname { get; set; }
+		[Required, StringLength(225, MinimumLength = 3)]
+		public required string Image { get; set; }
+		public int X  { get; set; } = -1;
+		public int Y  { get; set; } = -1;
 		public Status AgentStatus { get; set; } = Status.Dormant;
 	}
 }

@@ -3,24 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Rest\\AgentsApi\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9C41A517-EC6F-4D61-A73A-E14AEF015770}|AgentsApi\\AgentsApi.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\rest\\agentsapi\\agentsapi\\models\\killmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9C41A517-EC6F-4D61-A73A-E14AEF015770}|AgentsApi\\AgentsApi.csproj|solutionrelative:agentsapi\\models\\killmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9C41A517-EC6F-4D61-A73A-E14AEF015770}|AgentsApi\\AgentsApi.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\rest\\agentsapi\\agentsapi\\models\\agentmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9C41A517-EC6F-4D61-A73A-E14AEF015770}|AgentsApi\\AgentsApi.csproj|solutionrelative:agentsapi\\models\\agentmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{9C41A517-EC6F-4D61-A73A-E14AEF015770}|AgentsApi\\AgentsApi.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\rest\\agentsapi\\agentsapi\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9C41A517-EC6F-4D61-A73A-E14AEF015770}|AgentsApi\\AgentsApi.csproj|solutionrelative:agentsapi\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9C41A517-EC6F-4D61-A73A-E14AEF015770}|AgentsApi\\AgentsApi.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\rest\\agentsapi\\agentsapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9C41A517-EC6F-4D61-A73A-E14AEF015770}|AgentsApi\\AgentsApi.csproj|solutionrelative:agentsapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9C41A517-EC6F-4D61-A73A-E14AEF015770}|AgentsApi\\AgentsApi.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\rest\\agentsapi\\agentsapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{9C41A517-EC6F-4D61-A73A-E14AEF015770}|AgentsApi\\AgentsApi.csproj|solutionrelative:agentsapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -35,66 +19,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "KillModel.cs",
-              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Rest\\AgentsApi\\AgentsApi\\Models\\KillModel.cs",
-              "RelativeDocumentMoniker": "AgentsApi\\Models\\KillModel.cs",
-              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Rest\\AgentsApi\\AgentsApi\\Models\\KillModel.cs",
-              "RelativeToolTip": "AgentsApi\\Models\\KillModel.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-21T10:54:03.864Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AgentModel.cs",
-              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Rest\\AgentsApi\\AgentsApi\\Models\\AgentModel.cs",
-              "RelativeDocumentMoniker": "AgentsApi\\Models\\AgentModel.cs",
-              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Rest\\AgentsApi\\AgentsApi\\Models\\AgentModel.cs",
-              "RelativeToolTip": "AgentsApi\\Models\\AgentModel.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAADAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-21T08:48:42.903Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Rest\\AgentsApi\\AgentsApi\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "AgentsApi\\Data\\ApplicationDbContext.cs",
               "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Rest\\AgentsApi\\AgentsApi\\Data\\ApplicationDbContext.cs",
               "RelativeToolTip": "AgentsApi\\Data\\ApplicationDbContext.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-21T08:45:05.382Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Rest\\AgentsApi\\AgentsApi\\Program.cs",
-              "RelativeDocumentMoniker": "AgentsApi\\Program.cs",
-              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Rest\\AgentsApi\\AgentsApi\\Program.cs",
-              "RelativeToolTip": "AgentsApi\\Program.cs",
-              "ViewState": "AQIAAAoAAAAAAAAAAAAgwAIAAAAVAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-21T08:44:21.909Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Rest\\AgentsApi\\AgentsApi\\appsettings.json",
-              "RelativeDocumentMoniker": "AgentsApi\\appsettings.json",
-              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Rest\\AgentsApi\\AgentsApi\\appsettings.json",
-              "RelativeToolTip": "AgentsApi\\appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAEAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-08-21T08:41:55.588Z",
               "EditorCaption": ""
             }
           ]
