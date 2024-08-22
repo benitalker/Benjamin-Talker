@@ -13,7 +13,7 @@ using AgentsApi.Service;
 
 namespace AgentsApi.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("[controller]")]
 	[ApiController]
 	public class TargetsController(ITargetService targetService) : ControllerBase
 	{
@@ -26,7 +26,7 @@ namespace AgentsApi.Controllers
 			try
 			{
 				var target = await targetService.CreateTargetAsync(targetDto);
-				return Created("succses", target.Id);
+				return Created("succses", new IdDto() { Id = target.Id });
 			}
 			catch (Exception ex)
 			{
@@ -39,8 +39,15 @@ namespace AgentsApi.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<ActionResult<IEnumerable<TargetModel>>> Get()
 		{
-			var targets = await targetService.GetTargetsAsync();
-			return Ok(targets);
+			try
+			{
+				var targets = await targetService.GetTargetsAsync();
+				return Ok(targets);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex);
+			}
 		}
 
 		//PUT: /targets/{id}/pin
@@ -49,21 +56,27 @@ namespace AgentsApi.Controllers
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult> Pin(long id, [FromBody] PositionDto position)
 		{
-			var targetModel = await targetService.GetTargetByIdAsync(id);
-
-			if (targetModel == null)
+			try
 			{
-				return NotFound();
+				var targetModel = await targetService.GetTargetByIdAsync(id);
+
+				if (targetModel == null)
+				{
+					return NotFound();
+				}
+				await targetService.UpdateTargetLocation(id, position);
+				return Ok();
 			}
-			await targetService.UpdateTargetLocation(id, position);
-			return Ok();
+			catch (Exception ex)
+			{
+				return BadRequest(ex);
+			}
 		}
 
 		//PUT:/targets/{id}/move
 		[HttpPut("{id}/move")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		
 		public async Task<ActionResult> Move(long id, [FromBody] DirectionsDto direction)
 		{
 			try

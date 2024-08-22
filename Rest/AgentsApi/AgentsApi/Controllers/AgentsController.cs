@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AgentsApi.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("[controller]")]
 	[ApiController]
 	public class AgentsController(IAgentService agentService) : ControllerBase
 	{
@@ -21,7 +21,7 @@ namespace AgentsApi.Controllers
 			try
 			{
 				var agent = await agentService.CreateAgentAsync(agentDto);
-				return Created("succses", agent.Id);
+				return Created("succses", new IdDto() { Id = agent.Id });
 			}
 			catch (Exception ex)
 			{
@@ -39,8 +39,8 @@ namespace AgentsApi.Controllers
 			try
 			{
 				var agents = await agentService.GetAgentsAsync();
-				if (!agents.Any()) 
-				{ 
+				if (!agents.Any())
+				{
 					return NotFound();
 				}
 				return Ok(agents);
@@ -78,17 +78,18 @@ namespace AgentsApi.Controllers
 		[HttpPut("{id}/move")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult> Move(long id, [FromBody] DirectionsDto direction)
+		public async Task<ActionResult> Move(long id,[FromBody]  DirectionsDto direction)
 		{
-			try { 
-			var agentModel = await agentService.GetAgentByIdAsync(id);
-
-			if (agentModel == null)
+			try
 			{
-				return NotFound();
-			}
-			await agentService.MoveAgent(id, direction);
-			return Ok();
+				var agentModel = await agentService.GetAgentByIdAsync(id);
+
+				if (agentModel == null)
+				{
+					return NotFound();
+				}
+				await agentService.MoveAgent(id, direction);
+				return Ok();
 			}
 			catch (Exception ex)
 			{

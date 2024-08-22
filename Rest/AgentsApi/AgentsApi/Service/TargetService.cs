@@ -14,7 +14,7 @@ namespace AgentsApi.Service
 				TargetModel target = new()
 				{
 					Name = targetDto.Name,
-					Image = targetDto.Photo_url,
+					Image = targetDto.PhotoUrl,
 					Role = targetDto.Position
 				};
 				await context.Targets.AddAsync(target);
@@ -72,14 +72,14 @@ namespace AgentsApi.Service
 					throw new Exception("Target not found");
 				}
 
-				directionDto.direction.ToLower().Aggregate(target, (currentTarget, direction) =>
+				var newTarget = directionDto.Direction.ToLower().Aggregate(target, (currentTarget, direction) =>
 				{
 					(int newX, int newY) = direction switch
 					{
-						'n' => (currentTarget.X - 1, currentTarget.Y),
-						's' => (currentTarget.X + 1, currentTarget.Y),
-						'e' => (currentTarget.X, currentTarget.Y - 1),
-						'w' => (currentTarget.X, currentTarget.Y + 1),
+						'w' => (currentTarget.X - 1, currentTarget.Y),
+						'e' => (currentTarget.X + 1, currentTarget.Y),
+						's' => (currentTarget.X, currentTarget.Y - 1),
+						'n' => (currentTarget.X, currentTarget.Y + 1),
 						_ => throw new Exception($"Invalid direction character: {direction}")
 					};
 

@@ -2,6 +2,6 @@
 {
 	public class DirectionsDto
 	{
-		public string direction { get; set; } = string.Empty;
+		public string Direction { get; set; } = string.Empty;
 	}
 }

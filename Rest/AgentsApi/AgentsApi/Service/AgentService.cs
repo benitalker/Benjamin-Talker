@@ -13,8 +13,8 @@ namespace AgentsApi.Service
 			{
 				AgentModel agent = new()
 				{
-					Nickname = agentDto.Nickname,
-					Image = agentDto.Photo_url
+					Nickname = agentDto.NickName,
+					Image = agentDto.PhotoUrl
 				};
 				await context.Agents.AddAsync(agent);
 				await context.SaveChangesAsync();
@@ -74,14 +74,14 @@ namespace AgentsApi.Service
 				{
 					throw new Exception("Agent is active");
 				}
-				directionDto.direction.ToLower().Aggregate(agent, (currentAgent, direction) =>
+				var newAgent = directionDto.Direction.ToLower().Aggregate(agent, (currentAgent, direction) =>
 				{
 					(int newX, int newY) = direction switch
 					{
-						'n' => (currentAgent.X - 1, currentAgent.Y),
-						's' => (currentAgent.X + 1, currentAgent.Y),
-						'e' => (currentAgent.X, currentAgent.Y - 1),
-						'w' => (currentAgent.X, currentAgent.Y + 1),
+						'w' => (currentAgent.X - 1, currentAgent.Y),
+						'e' => (currentAgent.X + 1, currentAgent.Y),
+						's' => (currentAgent.X, currentAgent.Y - 1),
+						'n' => (currentAgent.X, currentAgent.Y + 1),
 						_ => throw new Exception($"Invalid direction character: {currentAgent.X} {currentAgent.Y}")
 					};
 

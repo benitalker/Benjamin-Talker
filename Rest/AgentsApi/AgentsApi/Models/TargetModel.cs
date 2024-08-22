@@ -5,7 +5,8 @@ namespace AgentsApi.Models
 	public enum TargetStatus
 	{
 		Alive,
-		dead
+		Hunted,
+		Dead
 	}
 	public class TargetModel
 	{	

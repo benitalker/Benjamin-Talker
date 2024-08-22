@@ -16,7 +16,7 @@ namespace AgentsApi.Service
 			}
 			catch
 			{
-				return new List<MissionModel>();
+				throw new Exception("GetMissionsAsync Error");
 			}
 		}
 
@@ -38,14 +38,18 @@ namespace AgentsApi.Service
 			}
 			catch
 			{
-				return new MissionModel();
+				throw new Exception("Error in creating Mission");
 			}
 		}
 
-		public async Task<bool> IsMissionCreateValid(long agentId, long targetId)
+		public async Task<int> DistanceMissions()
 		{
-			bool agentHasMission = await context.Missions.AnyAsync(m => m.AgentId == agentId);
-			return !agentHasMission;
+			return 0;
 		}
+
+		//1. agent pin/move and target pin/move
+		//2. distance between them
+		//3. isAgentValidToMission() => check agent status
+		//4. isTargetValidToMission() => missions.(targetid == id).(MissionStatus == MissionStatus.OnTask).any()
 	}
 }

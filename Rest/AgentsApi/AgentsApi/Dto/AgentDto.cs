@@ -2,7 +2,7 @@
 {
 	public class AgentDto
 	{
-		public string Nickname { get; set; } = string.Empty;
-		public string Photo_url { get; set; } = string.Empty;
+		public string NickName { get; set; } = string.Empty;
+		public string PhotoUrl { get; set; } = string.Empty;
 	}
 }
