@@ -20,7 +20,7 @@ namespace AgentsApi.Service
 			}
 		}
 
-		public async Task<MissionModel?> CreateMission(long agentId,long targetId)
+		public async Task<MissionModel?> CreateMission(long agentId, long targetId)
 		{
 			try
 			{
@@ -42,14 +42,19 @@ namespace AgentsApi.Service
 			}
 		}
 
-		public async Task<int> DistanceMissions()
-		{
-			return 0;
-		}
+		public double MeasureDistance(TargetModel target, AgentModel agent)
+			=> Math.Sqrt(Math.Pow(target.X - agent.X, 2) + Math.Pow(target.Y - agent.Y, 2));
+
+		public bool IsAgentValidToMission(AgentModel agent)
+			=> agent.AgentStatus == AgentStatus.Dormant;
+
+		public bool IsTargetValidToMission(TargetModel target)
+			=> target.TargetStatus == TargetStatus.Alive;
+
 
 		//1. agent pin/move and target pin/move
-		//2. distance between them
-		//3. isAgentValidToMission() => check agent status
-		//4. isTargetValidToMission() => missions.(targetid == id).(MissionStatus == MissionStatus.OnTask).any()
+		//2. distance between them: done
+		//3. isAgentValidToMission() => check agent status: done
+		//4. isTargetValidToMission() => missions.(targetid == id).(MissionStatus == MissionStatus.OnTask).any():
 	}
 }
