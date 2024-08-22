@@ -21,11 +21,12 @@ namespace AgentsApi.Controllers
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status201Created)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<ActionResult<TargetModel>> CreateTarget([FromBody] TargetDto targetDto)
+		public async Task<ActionResult<long>> Create([FromBody] TargetDto targetDto)
 		{
 			try
 			{
-				return Created("succses", await targetService.CreateTargetAsync(targetDto));
+				var target = await targetService.CreateTargetAsync(targetDto);
+				return Created("succses", target.Id);
 			}
 			catch (Exception ex)
 			{
@@ -36,17 +37,17 @@ namespace AgentsApi.Controllers
 		// GET: api/Targets
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<ActionResult<IEnumerable<TargetModel>>> GetTargets()
+		public async Task<ActionResult<IEnumerable<TargetModel>>> Get()
 		{
-			return await targetService.GetTargetsAsync();
+			var targets = await targetService.GetTargetsAsync();
+			return Ok(targets);
 		}
-
 
 		//PUT: /targets/{id}/pin
 		[HttpPut("{id}/pin")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult> TargetStartPosition(long id, [FromBody] PositionDto position)
+		public async Task<ActionResult> Pin(long id, [FromBody] PositionDto position)
 		{
 			var targetModel = await targetService.GetTargetByIdAsync(id);
 
@@ -62,68 +63,24 @@ namespace AgentsApi.Controllers
 		[HttpPut("{id}/move")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult> MoveTargetToDirection(long id, [FromBody] DirectionsDto direction)
-		{
-			var targetModel = await targetService.GetTargetByIdAsync(id);
-
-			if (targetModel == null)
-			{
-				return NotFound();
-			}
-			await targetService.MoveTarget(id, direction);
-			return Ok();
-		}
-
-		/*// GET: api/Targets/5
-		[HttpGet("{id}")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult<TargetModel>> GetTargetById(long id)
-		{
-			var targetModel = await targetService.GetTargetByIdAsync(id);
-
-			if (targetModel == null)
-			{
-				return NotFound();
-			}
-
-			return targetModel;
-		}
-
-		// PUT: api/Targets/Update/5
-		[HttpPut("Update/{id}")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-
-		public async Task<ActionResult> PutTargetModel(long id, TargetModel targetModel)
+		
+		public async Task<ActionResult> Move(long id, [FromBody] DirectionsDto direction)
 		{
 			try
 			{
-				return Ok(await targetService.UpdateTargetAsync(id, targetModel));
+				var targetModel = await targetService.GetTargetByIdAsync(id);
+
+				if (targetModel == null)
+				{
+					return NotFound();
+				}
+				await targetService.MoveTarget(id, direction);
+				return Ok();
 			}
-			catch (DbUpdateConcurrencyException)
+			catch
 			{
 				return NotFound();
 			}
 		}
-
-		// DELETE: api/Targets/5
-		[HttpDelete("{id}")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult> DeleteTargetModel(long id)
-		{
-			var targetModel = await targetService.GetTargetByIdAsync(id);
-
-			if (targetModel == null)
-			{
-				return NotFound();
-			}
-			else
-			{
-				var target = await targetService.DeleteTargetAsync(id);
-				return Ok(target);
-			}
-		}*/
 	}
 }

@@ -16,16 +16,16 @@ namespace AgentsApi.Controllers
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status201Created)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<ActionResult<TargetModel>> CreateAgent([FromBody] AgentDto agentDto)
+		public async Task<ActionResult<long>> Create([FromBody] AgentDto agentDto)
 		{
 			try
 			{
 				var agent = await agentService.CreateAgentAsync(agentDto);
-				return Created("succses", agent);
+				return Created("succses", agent.Id);
 			}
 			catch (Exception ex)
 			{
-				return BadRequest(ex);
+				return NotFound(ex);
 			}
 		}
 
@@ -34,7 +34,7 @@ namespace AgentsApi.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult<IEnumerable<TargetModel>>> GetAgents()
+		public async Task<ActionResult<IEnumerable<TargetModel>>> Get()
 		{
 			try
 			{
@@ -47,7 +47,7 @@ namespace AgentsApi.Controllers
 			}
 			catch (Exception ex)
 			{
-				return BadRequest(ex);
+				return NotFound(ex);
 			}
 		}
 
@@ -55,32 +55,45 @@ namespace AgentsApi.Controllers
 		[HttpPut("{id}/pin")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult> AgentStartPosition(long id, [FromBody] PositionDto position)
+		public async Task<ActionResult> Pin(long id, [FromBody] PositionDto position)
 		{
-			var targetModel = await agentService.GetAgentByIdAsync(id);
-
-			if (targetModel == null)
+			try
 			{
-				return NotFound();
+				var targetModel = await agentService.GetAgentByIdAsync(id);
+
+				if (targetModel == null)
+				{
+					return NotFound();
+				}
+				await agentService.UpdateAgentLocation(id, position);
+				return Ok();
 			}
-			await agentService.UpdateAgentLocation(id, position);
-			return Ok();
+			catch (Exception ex)
+			{
+				return NotFound(ex);
+			}
 		}
 
 		//PUT:/agents/{id}/move
 		[HttpPut("{id}/move")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult> MoveAgentToDirection(long id, [FromBody] DirectionsDto direction)
+		public async Task<ActionResult> Move(long id, [FromBody] DirectionsDto direction)
 		{
-			var targetModel = await agentService.GetAgentByIdAsync(id);
+			try { 
+			var agentModel = await agentService.GetAgentByIdAsync(id);
 
-			if (targetModel == null)
+			if (agentModel == null)
 			{
 				return NotFound();
 			}
 			await agentService.MoveAgent(id, direction);
 			return Ok();
+			}
+			catch (Exception ex)
+			{
+				return NotFound(ex);
+			}
 		}
 	}
 }

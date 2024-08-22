@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AgentsApi.Models
 {
-	public enum Status
+	public enum MissionStatus
 	{
 		KillPropose,
 		OnTask,
@@ -19,7 +19,7 @@ namespace AgentsApi.Models
 		public long AgentId { get; set; }
 		public AgentModel? AgentModel { get; set; }
 		public double TimeLeft { get; set; }
-		public double ExecutionTime { get; set; }
-		public Status MissionStatus { get; set; }
+		public double ExecutionTime { get; set; } = 0;
+		public MissionStatus MissionStatus { get; set; } = MissionStatus.KillPropose;
 	}
 }

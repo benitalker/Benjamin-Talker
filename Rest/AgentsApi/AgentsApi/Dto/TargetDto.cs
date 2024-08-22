@@ -1,4 +1,6 @@
-﻿namespace AgentsApi.Dto
+﻿using NuGet.Common;
+
+namespace AgentsApi.Dto
 {
 	public class TargetDto
 	{
