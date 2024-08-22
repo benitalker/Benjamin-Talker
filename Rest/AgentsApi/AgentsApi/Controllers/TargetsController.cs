@@ -41,7 +41,40 @@ namespace AgentsApi.Controllers
 			return await targetService.GetTargetsAsync();
 		}
 
-		// GET: api/Targets/5
+
+		//PUT: /targets/{id}/pin
+		[HttpPut("{id}/pin")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult> TargetStartPosition(long id, [FromBody] PositionDto position)
+		{
+			var targetModel = await targetService.GetTargetByIdAsync(id);
+
+			if (targetModel == null)
+			{
+				return NotFound();
+			}
+			await targetService.UpdateTargetLocation(id, position);
+			return Ok();
+		}
+
+		//PUT:/targets/{id}/move
+		[HttpPut("{id}/move")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult> MoveTargetToDirection(long id, [FromBody] DirectionsDto direction)
+		{
+			var targetModel = await targetService.GetTargetByIdAsync(id);
+
+			if (targetModel == null)
+			{
+				return NotFound();
+			}
+			await targetService.MoveTarget(id, direction);
+			return Ok();
+		}
+
+		/*// GET: api/Targets/5
 		[HttpGet("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -91,38 +124,6 @@ namespace AgentsApi.Controllers
 				var target = await targetService.DeleteTargetAsync(id);
 				return Ok(target);
 			}
-		}
-
-		//PUT: /targets/{id}/pin
-		[HttpPut("{id}/pin")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult> TargetStartPosition(long id, [FromBody] PositionDto position)
-		{
-			var targetModel = await targetService.GetTargetByIdAsync(id);
-
-			if (targetModel == null)
-			{
-				return NotFound();
-			}
-			await targetService.UpdateTargetLocation(id, position);
-			return Ok();
-		}
-
-		//PUT:/targets/{id}/move
-		[HttpPut("{id}/move")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult> MoveTargetToDirection(long id, [FromBody] DirectionsDto direction)
-		{
-			var targetModel = await targetService.GetTargetByIdAsync(id);
-
-			if (targetModel == null)
-			{
-				return NotFound();
-			}
-			await targetService.MoveTarget(id, direction);
-			return Ok();
-		}
+		}*/
 	}
 }

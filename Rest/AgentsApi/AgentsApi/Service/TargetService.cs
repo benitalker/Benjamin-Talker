@@ -77,21 +77,25 @@ namespace AgentsApi.Service
 			{
 				throw new Exception("Target not found");
 			}
-			if(directionDto.direction.Contains("n"))
+			foreach (char direction in directionDto.direction.ToLower())
 			{
-				target.X -= 1;
-			}
-			if (directionDto.direction.Contains("s"))
-			{
-				target.X += 1;
-			}
-			if (directionDto.direction.Contains("e"))
-			{
-				target.Y -= 1;
-			}
-			if (directionDto.direction.Contains("w"))
-			{
-				target.X += 1;
+				switch (direction)
+				{
+					case 'n':
+						target.X -= 1;
+						break;
+					case 's':
+						target.X += 1;
+						break;
+					case 'e':
+						target.Y -= 1;
+						break;
+					case 'w':
+						target.Y += 1;
+						break;
+					default:
+						throw new Exception($"Invalid direction character: {direction}");
+				}
 			}
 			await context.SaveChangesAsync();
 		}

@@ -27,6 +27,7 @@ namespace AgentsApi
 			);
 
 			builder.Services.AddScoped<ITargetService, TargetService>();
+			builder.Services.AddScoped<IAgentService, AgentService>();
 
 			var app = builder.Build();
 

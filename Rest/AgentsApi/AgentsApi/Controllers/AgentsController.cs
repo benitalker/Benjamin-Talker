@@ -10,17 +10,18 @@ namespace AgentsApi.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class AgentsController(ApplicationDbContext _context, ITargetService targetService) : ControllerBase
+	public class AgentsController(IAgentService agentService) : ControllerBase
 	{
-		// Post: api/Agents
+		// Post: api/agents
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status201Created)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<ActionResult<TargetModel>> CreateTarget([FromBody] TargetDto targetDto)
+		public async Task<ActionResult<TargetModel>> CreateAgent([FromBody] AgentDto agentDto)
 		{
 			try
 			{
-				return Created("succses", await targetService.CreateTargetAsync(targetDto));
+				var agent = await agentService.CreateAgentAsync(agentDto);
+				return Created("succses", agent);
 			}
 			catch (Exception ex)
 			{
@@ -28,64 +29,58 @@ namespace AgentsApi.Controllers
 			}
 		}
 
-		// GET: api/Agents
+		// GET: api/agents
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<ActionResult<IEnumerable<TargetModel>>> GetTargets()
-		{
-			return await targetService.GetTargetsAsync();
-		}
-
-		// GET: api/Agents/5
-		[HttpGet("{id}")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult<TargetModel>> GetTargetById(long id)
-		{
-			var targetModel = await targetService.GetTargetByIdAsync(id);
-
-			if (targetModel == null)
-			{
-				return NotFound();
-			}
-
-			return targetModel;
-		}
-
-		// PUT: api/Agents/5
-		[HttpPut("{id}")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-
-		public async Task<IActionResult> PutTargetModel(long id, TargetModel targetModel)
+		public async Task<ActionResult<IEnumerable<TargetModel>>> GetAgents()
 		{
 			try
 			{
-				return Ok(await targetService.UpdateTargetAsync(id, targetModel));
+				var agents = await agentService.GetAgentsAsync();
+				if (!agents.Any()) 
+				{ 
+					return NotFound();
+				}
+				return Ok(agents);
 			}
-			catch (DbUpdateConcurrencyException)
+			catch (Exception ex)
 			{
-				return NotFound();
+				return BadRequest(ex);
 			}
 		}
 
-		// DELETE: api/Agents/5
-		[HttpDelete("{id}")]
+		//PUT: /agents/{id}/pin
+		[HttpPut("{id}/pin")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<IActionResult> DeleteTargetModel(long id)
+		public async Task<ActionResult> AgentStartPosition(long id, [FromBody] PositionDto position)
 		{
-			var targetModel = await targetService.GetTargetByIdAsync(id);
+			var targetModel = await agentService.GetAgentByIdAsync(id);
 
 			if (targetModel == null)
 			{
 				return NotFound();
 			}
-			else
+			await agentService.UpdateAgentLocation(id, position);
+			return Ok();
+		}
+
+		//PUT:/agents/{id}/move
+		[HttpPut("{id}/move")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult> MoveAgentToDirection(long id, [FromBody] DirectionsDto direction)
+		{
+			var targetModel = await agentService.GetAgentByIdAsync(id);
+
+			if (targetModel == null)
 			{
-				var target = await targetService.DeleteTargetAsync(id);
-				return Ok(target);
+				return NotFound();
 			}
+			await agentService.MoveAgent(id, direction);
+			return Ok();
 		}
 	}
 }
