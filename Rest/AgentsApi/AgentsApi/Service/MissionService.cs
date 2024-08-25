@@ -129,7 +129,7 @@ namespace AgentsApi.Service
 
 			using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
 			var missionsToUpdate = await dbContext.Missions.Where(m => m.MissionStatus == MissionStatus.OnTask).ToListAsync();
-			missionsToUpdate.ForEach(async m => await MissionUpdate(m.i));
+			missionsToUpdate.ForEach(async m => await MissionUpdate(m.Id));
 			await dbContext.SaveChangesAsync();
 		}
 

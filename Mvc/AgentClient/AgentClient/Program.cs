@@ -1,3 +1,5 @@
+using AgentClient.Service;
+
 namespace AgentClient
 {
 	public class Program
@@ -9,7 +11,12 @@ namespace AgentClient
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 
-			var app = builder.Build();
+			builder.Services.AddHttpClient();
+
+			builder.Services.AddScoped<IGeneralService, GeneralService>();
+			builder.Services.AddScoped<IMissionService, MissionService>();
+
+            var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
 			if (!app.Environment.IsDevelopment())

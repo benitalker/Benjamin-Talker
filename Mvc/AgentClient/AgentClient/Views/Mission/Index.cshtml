@@ -1,0 +1,43 @@
+﻿@model IEnumerable<AgentClient.ViewModel.MissionVm>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.AgentNickName)</th>
+            <th>@Html.DisplayNameFor(model => model.AgentX)</th>
+            <th>@Html.DisplayNameFor(model => model.AgentY)</th>
+            <th>@Html.DisplayNameFor(model => model.TargetName)</th>
+            <th>@Html.DisplayNameFor(model => model.TargetX)</th>
+            <th>@Html.DisplayNameFor(model => model.TargetY)</th>
+            <th>@Html.DisplayNameFor(model => model.MissionDistance)</th>
+            <th>@Html.DisplayNameFor(model => model.MissionTimeLeft)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.AgentNickName)</td>
+                <td>@Html.DisplayFor(modelItem => item.AgentX)</td>
+                <td>@Html.DisplayFor(modelItem => item.AgentY)</td>
+                <td>@Html.DisplayFor(modelItem => item.TargetName)</td>
+                <td>@Html.DisplayFor(modelItem => item.TargetX)</td>
+                <td>@Html.DisplayFor(modelItem => item.TargetY)</td>
+                <td>@Html.DisplayFor(modelItem => item.MissionDistance)</td>
+                <td>@Html.DisplayFor(modelItem => item.MissionTimeLeft)</td>
+                <td>@Html.ActionLink("Details", "Details", new { id = item.Id })</td>
+            </tr>
+        }
+    </tbody>
+</table>

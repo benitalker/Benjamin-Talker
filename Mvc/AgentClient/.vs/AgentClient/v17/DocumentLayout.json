@@ -1,12 +1,105 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\mvc\\agentclient\\agentclient\\views\\mission\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|solutionrelative:agentclient\\views\\mission\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\mvc\\agentclient\\agentclient\\service\\missionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|solutionrelative:agentclient\\service\\missionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\mvc\\agentclient\\agentclient\\viewmodel\\missionvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|solutionrelative:agentclient\\viewmodel\\missionvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\mvc\\agentclient\\agentclient\\controllers\\missioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|solutionrelative:agentclient\\controllers\\missioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\mvc\\agentclient\\agentclient\\service\\imissionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|solutionrelative:agentclient\\service\\imissionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 176,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MissionVm.cs",
+              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\ViewModel\\MissionVm.cs",
+              "RelativeDocumentMoniker": "AgentClient\\ViewModel\\MissionVm.cs",
+              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\ViewModel\\MissionVm.cs",
+              "RelativeToolTip": "AgentClient\\ViewModel\\MissionVm.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-25T15:01:08.643Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Views\\Mission\\Index.cshtml",
+              "RelativeDocumentMoniker": "AgentClient\\Views\\Mission\\Index.cshtml",
+              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Views\\Mission\\Index.cshtml",
+              "RelativeToolTip": "AgentClient\\Views\\Mission\\Index.cshtml",
+              "ViewState": "AQIAABYAAAAAAAAAAADgvysAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-08-25T14:51:25.838Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MissionController.cs",
+              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Controllers\\MissionController.cs",
+              "RelativeDocumentMoniker": "AgentClient\\Controllers\\MissionController.cs",
+              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Controllers\\MissionController.cs",
+              "RelativeToolTip": "AgentClient\\Controllers\\MissionController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-25T14:49:44.582Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MissionService.cs",
+              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Service\\MissionService.cs",
+              "RelativeDocumentMoniker": "AgentClient\\Service\\MissionService.cs",
+              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Service\\MissionService.cs",
+              "RelativeToolTip": "AgentClient\\Service\\MissionService.cs",
+              "ViewState": "AQIAABMAAAAAAAAAAADwvyMAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-25T14:33:29.279Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IMissionService.cs",
+              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Service\\IMissionService.cs",
+              "RelativeDocumentMoniker": "AgentClient\\Service\\IMissionService.cs",
+              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Service\\IMissionService.cs",
+              "RelativeToolTip": "AgentClient\\Service\\IMissionService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAkAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-25T14:33:17.067Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

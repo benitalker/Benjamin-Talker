@@ -1,0 +1,62 @@
+﻿@model AgentClient.ViewModel.GeneralVM
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<div>
+    <h4>GeneralVM</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-6">
+            Agents
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumOfAgents)
+        </dd>
+        <dt class = "col-sm-6">
+            Active Agents
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumOfActiveAgents)
+        </dd>
+        <dt class="col-sm-6">
+            Targets
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumOfTargets)
+        </dd>
+        <dt class="col-sm-6">
+            Dead Targets
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumOfDeadTargets)
+        </dd>
+        <dt class="col-sm-6">
+            Missions
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumOfMissions)
+        </dd>
+        <dt class="col-sm-6">
+            Active Missions
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumOfActiveMissions)
+        </dd>
+        <dt class="col-sm-6">
+            Agent To Target Ratio
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AgentToTargetRatio)
+        </dd>
+        <dt class="col-sm-6">
+            Dorment Agents To Target Ratio
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DormentAgentsToTargetRatio)
+        </dd>
+    </dl>
+</div>
