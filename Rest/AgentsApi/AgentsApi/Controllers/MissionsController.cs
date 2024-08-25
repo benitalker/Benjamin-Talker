@@ -2,10 +2,11 @@
 using AgentsApi.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using AgentsApi.Dto;
 
 namespace AgentsApi.Controllers
 {
-	[Route("api/missions")]
+	[Route("missions")]
 	[ApiController]
 	public class MissionsController(IMissionService missionService) : ControllerBase
 	{
@@ -29,6 +30,30 @@ namespace AgentsApi.Controllers
 			{
 				return BadRequest(ex);
 			}
+		}
+
+		[HttpPut("{id}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		public async Task<ActionResult<string>> MissionStatusUpdate(long id)
+		{
+			try
+			{
+				string result = await missionService.MissionStatusUpdate(id);
+				return Ok(new MissionUpdateDto() { Status = result });
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex);
+			}
+		}
+
+		[HttpPost("update")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		public async Task MissionsUpdate()
+		{
+			await missionService.UpdateMissions();
 		}
 	}
 }

@@ -10,13 +10,16 @@ using AgentsApi.Models;
 using AgentsApi.Dto;
 using Microsoft.AspNetCore.Authorization;
 using AgentsApi.Service;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AgentsApi.Controllers
 {
 	[Route("[controller]")]
 	[ApiController]
-	public class TargetsController(ITargetService targetService) : ControllerBase
+	public class TargetsController(ITargetService targetService,IServiceProvider serviceProvider) : ControllerBase
 	{
+		private IMissionService missionService => serviceProvider.GetRequiredService<IMissionService>();
+
 		// Post: api/Targets
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status201Created)]
@@ -65,6 +68,8 @@ namespace AgentsApi.Controllers
 					return NotFound();
 				}
 				await targetService.UpdateTargetLocation(id, position);
+				var agents = await targetService.GetAgentsForMissions(id);
+				agents.ForEach(t => missionService.CreateMission(id, t.Id));
 				return Ok();
 			}
 			catch (Exception ex)
@@ -88,6 +93,8 @@ namespace AgentsApi.Controllers
 					return NotFound();
 				}
 				await targetService.MoveTarget(id, direction);
+				var agents = await targetService.GetAgentsForMissions(id);
+				agents.ForEach(t => missionService.CreateMission(id, t.Id));
 				return Ok();
 			}
 			catch

@@ -5,6 +5,7 @@ namespace AgentsApi.Service
 {
 	public interface ITargetService
 	{
+		Task<List<AgentModel>> GetAgentsForMissions(long targetId);
 		Task<IEnumerable<TargetModel>> GetTargetsAsync();
 		Task<TargetModel?> GetTargetByIdAsync(long id);
 		Task<TargetModel> CreateTargetAsync(TargetDto targetDto);

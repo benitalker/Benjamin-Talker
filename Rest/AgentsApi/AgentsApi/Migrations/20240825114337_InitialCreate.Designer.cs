@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgentsApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240821123426_initialCreate")]
-    partial class initialCreate
+    [Migration("20240825114337_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,8 +32,9 @@ namespace AgentsApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<int>("AgentStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("AgentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
                         .IsRequired()
@@ -70,8 +71,9 @@ namespace AgentsApi.Migrations
                     b.Property<double>("ExecutionTime")
                         .HasColumnType("float");
 
-                    b.Property<int>("MissionStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("MissionStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("TargetId")
                         .HasColumnType("bigint");
@@ -111,8 +113,9 @@ namespace AgentsApi.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("TargetStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("TargetStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("X")
                         .HasColumnType("int");

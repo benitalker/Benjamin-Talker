@@ -4,13 +4,14 @@ using AgentsApi.Models;
 using AgentsApi.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgentsApi.Controllers
 {
 	[Route("[controller]")]
 	[ApiController]
-	public class AgentsController(IAgentService agentService) : ControllerBase
+	public class AgentsController(IAgentService agentService,IMissionService missionService) : ControllerBase
 	{
 		// Post: api/agents
 		[HttpPost]
@@ -59,18 +60,21 @@ namespace AgentsApi.Controllers
 		{
 			try
 			{
-				var targetModel = await agentService.GetAgentByIdAsync(id);
+				var agentModel = await agentService.GetAgentByIdAsync(id);
 
-				if (targetModel == null)
+				if (agentModel == null)
 				{
 					return NotFound();
 				}
+
 				await agentService.UpdateAgentLocation(id, position);
+				var targets = await agentService.GetTargetsForMissions(id);
+				targets.ForEach(t => missionService.CreateMission(id, t.Id));
 				return Ok();
 			}
 			catch (Exception ex)
 			{
-				return NotFound(ex);
+				return NotFound(ex.Message);
 			}
 		}
 
@@ -89,6 +93,8 @@ namespace AgentsApi.Controllers
 					return NotFound();
 				}
 				await agentService.MoveAgent(id, direction);
+				var targets = await agentService.GetTargetsForMissions(id);
+				targets.ForEach(t => missionService.CreateMission(id, t.Id));
 				return Ok();
 			}
 			catch (Exception ex)

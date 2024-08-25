@@ -11,6 +11,21 @@ namespace AgentsApi.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.Entity<AgentModel>()
+				.Property(a => a.AgentStatus)
+				.HasConversion<string>()
+				.IsRequired();
+
+			modelBuilder.Entity<TargetModel>()
+				.Property(a => a.TargetStatus)
+				.HasConversion<string>()
+				.IsRequired();
+
+			modelBuilder.Entity<MissionModel>()
+				.Property(a => a.MissionStatus)
+				.HasConversion<string>()
+				.IsRequired();
+
 			modelBuilder.Entity<MissionModel>()
 				.HasOne(m => m.AgentModel)
 				.WithMany()
@@ -22,8 +37,6 @@ namespace AgentsApi.Data
 				.WithMany()
 				.HasForeignKey(m => m.TargetId)
 				.OnDelete(DeleteBehavior.Restrict);
-
-			base.OnModelCreating(modelBuilder);
 		}
 	}
 }

@@ -5,13 +5,19 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AgentsApi.Service
 {
-	public class MissionService(ApplicationDbContext context) : IMissionService
+	public class MissionService(IServiceProvider serviceProvider) : IMissionService
 	{
+
 		public async Task<List<MissionModel>> GetMissionsAsync()
 		{
 			try
 			{
-				var missions = await context.Missions.ToListAsync();
+				using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+
+				var missions = await dbContext.Missions
+					.Include(m => m.AgentModel)
+					.Include(m => m.TargetModel)
+					.ToListAsync();
 				return missions;
 			}
 			catch
@@ -20,41 +26,175 @@ namespace AgentsApi.Service
 			}
 		}
 
+		private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+
 		public async Task<MissionModel?> CreateMission(long agentId, long targetId)
 		{
+			await _semaphore.WaitAsync();
 			try
 			{
-				MissionModel mission = new MissionModel()
-				{
-					TargetId = targetId,
-					TargetModel = await context.Targets.Where(t => t.Id == targetId).FirstOrDefaultAsync(),
-					AgentId = agentId,
-					AgentModel = await context.Agents.Where(t => t.Id == agentId).FirstOrDefaultAsync(),
-					TimeLeft = 0
-				};
-				await context.Missions.AddAsync(mission);
-				await context.SaveChangesAsync();
-				return mission;
+				return await CreateMissionInternal(agentId, targetId);
 			}
-			catch
+			finally
 			{
-				throw new Exception("Error in creating Mission");
+				_semaphore.Release();
 			}
 		}
 
-		public double MeasureDistance(TargetModel target, AgentModel agent)
+		private async Task<MissionModel?> CreateMissionInternal(long agentId, long targetId)
+		{
+			try
+			{
+				using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+
+				var checkMission = await dbContext.Missions
+					.Where(m => m.AgentId == agentId && m.TargetId == targetId)
+					.FirstOrDefaultAsync();
+
+				var agentModel = await dbContext.Agents.FirstOrDefaultAsync(a => a.Id == agentId);
+				var targetModel = await dbContext.Targets.FirstOrDefaultAsync(t => t.Id == targetId);
+
+				if (checkMission == null)
+				{
+					if (agentModel == null || targetModel == null)
+					{
+						return null;
+					}
+
+					if (IsMissionCreationValid(agentModel, targetModel))
+					{
+						var mission = new MissionModel
+						{
+							TargetId = targetId,
+							AgentId = agentId,
+							TimeLeft = MeasureMissionDistance(targetModel, agentModel) / 5
+						};
+
+						await dbContext.Missions.AddAsync(mission);
+						await dbContext.SaveChangesAsync();
+						return mission;
+					}
+				}
+				else
+				{
+					checkMission.TimeLeft = MeasureMissionDistance(targetModel, agentModel) / 5;
+					await dbContext.SaveChangesAsync();
+				}
+				return null;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error in creating Mission", ex);
+			}
+		}
+		public double MeasureMissionDistance(TargetModel target, AgentModel agent)
 			=> Math.Sqrt(Math.Pow(target.X - agent.X, 2) + Math.Pow(target.Y - agent.Y, 2));
 
-		public bool IsAgentValidToMission(AgentModel agent)
+		public async Task<string> MissionStatusUpdate(long missionId)
+		{
+			using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+			MissionModel? mission = await dbContext.Missions.FirstOrDefaultAsync(m => m.Id == missionId);
+			if (mission == null)
+			{ 
+				return string.Empty; 
+			}
+			mission.MissionStatus = MissionStatus.OnTask;
+
+			AgentModel? agent = await dbContext.Agents.
+				FirstOrDefaultAsync(a => a.Id == mission.AgentId);
+			TargetModel? target = await dbContext.Targets.
+				FirstOrDefaultAsync(t => t.Id == mission.TargetId);
+
+			if(target == null || agent == null)
+			{
+				return string.Empty;
+			}
+
+			mission.ExecutionTime = MeasureMissionDistance(target, agent) / 5;
+			agent.AgentStatus = AgentStatus.Active;
+			target.TargetStatus = TargetStatus.Hunted;
+
+			await dbContext.SaveChangesAsync();
+
+			var missionsToDelete = await dbContext.Missions
+				.Where(m => m.AgentId == mission.AgentId && m.MissionStatus == MissionStatus.KillPropose
+				|| m.TargetId == mission.TargetId && m.MissionStatus == MissionStatus.KillPropose).ToListAsync();
+			dbContext.RemoveRange(missionsToDelete);
+			await dbContext.SaveChangesAsync();
+			return "assigned";
+		}
+
+		public async Task UpdateMissions()
+		{
+
+			using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+			var missionsToUpdate = await dbContext.Missions.Where(m => m.MissionStatus == MissionStatus.OnTask).ToListAsync();
+			missionsToUpdate.ForEach(async m => await MissionUpdate(m.i));
+			await dbContext.SaveChangesAsync();
+		}
+
+		private async Task MissionUpdate(long missionId)
+		{
+			using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+			MissionModel? mission = await dbContext.Missions.
+				FirstOrDefaultAsync(m => m.Id == missionId);
+			if (mission == null)
+			{
+				return;
+			}
+			AgentModel? agent = await dbContext.Agents.
+				FirstOrDefaultAsync(a => a.Id == mission.AgentId);
+			TargetModel? target = await dbContext.Targets.
+				FirstOrDefaultAsync(t => t.Id == mission.TargetId);
+
+			if (target == null || agent == null || !isMissionValidToUpdate(mission,agent,target))
+			{
+				return;
+			}
+			if (agent.X == target.X && agent.Y == target.Y) 
+			{ 
+				target.TargetStatus = TargetStatus.Dead;
+				agent.AgentStatus = AgentStatus.Dormant;
+				mission.MissionStatus = MissionStatus.MissionEnded;
+				mission.TimeLeft = 0;
+				await dbContext.SaveChangesAsync();
+				return;
+			}
+			var agentMovment = MoveAgentAfterTarget(agent,target);
+
+			agent.X = agentMovment.x;
+			agent.Y = agentMovment.y;
+
+			mission.TimeLeft = MeasureMissionDistance(target, agent) / 5;
+
+			await dbContext.SaveChangesAsync();
+		}
+
+		private bool isMissionValidToUpdate(MissionModel mission,AgentModel agent,TargetModel target)
+		{
+			return agent.AgentStatus == AgentStatus.Active
+				&& target.TargetStatus == TargetStatus.Hunted
+				&& mission.MissionStatus == MissionStatus.OnTask;
+		}
+
+		private bool IsAgentValidToMission(AgentModel agent)
 			=> agent.AgentStatus == AgentStatus.Dormant;
 
-		public bool IsTargetValidToMission(TargetModel target)
+		private bool IsTargetValidToMission(TargetModel target)
 			=> target.TargetStatus == TargetStatus.Alive;
 
+		private bool IsMissionCreationValid(AgentModel agent, TargetModel target)
+			=> IsAgentValidToMission(agent)
+			&& IsTargetValidToMission(target);
 
-		//1. agent pin/move and target pin/move
-		//2. distance between them: done
-		//3. isAgentValidToMission() => check agent status: done
-		//4. isTargetValidToMission() => missions.(targetid == id).(MissionStatus == MissionStatus.OnTask).any():
+		private (int x, int y) MoveAgentAfterTarget(AgentModel agent, TargetModel target)
+		{
+			(int x, int y) agentLocation = (agent.X, agent.Y);
+			if (agentLocation.x < target.X) agentLocation.x++;
+			else if (agentLocation.x > target.X) agentLocation.x--;
+			if (agentLocation.y < target.Y) agentLocation.y++;
+			else if (agentLocation.y > target.Y) agentLocation.y--;
+			return (agentLocation.x == agent.X && agentLocation.y == agent.Y) ? (-10, -10) : agentLocation;
+		}
 	}
 }

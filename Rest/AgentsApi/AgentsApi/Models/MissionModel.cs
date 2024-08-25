@@ -9,6 +9,7 @@ namespace AgentsApi.Models
 		OnTask,
 		MissionEnded
 	}
+
 	public class MissionModel
 	{
 		public long Id { get; set; }
@@ -18,7 +19,7 @@ namespace AgentsApi.Models
 		[Required]
 		public long AgentId { get; set; }
 		public AgentModel? AgentModel { get; set; }
-		public double TimeLeft { get; set; }
+		public double TimeLeft { get; set; } = 0;
 		public double ExecutionTime { get; set; } = 0;
 		public MissionStatus MissionStatus { get; set; } = MissionStatus.KillPropose;
 	}

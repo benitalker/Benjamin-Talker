@@ -17,18 +17,23 @@ namespace AgentsApi
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
-
+/*
 			builder.Services.AddDbContext<ApplicationDbContext>(
 				options => options.UseSqlServer(
 					builder.Configuration.GetConnectionString(
 						"DefaultConnection"
 					)
 				)
-			);
+			);*/
 
 			builder.Services.AddScoped<ITargetService, TargetService>();
 			builder.Services.AddScoped<IAgentService, AgentService>();
 			builder.Services.AddScoped<IMissionService, MissionService>();
+			builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
+			{
+				var configuration = sp.GetRequiredService<IConfiguration>();
+				options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+			}, ServiceLifetime.Scoped);
 
 			var app = builder.Build();
 

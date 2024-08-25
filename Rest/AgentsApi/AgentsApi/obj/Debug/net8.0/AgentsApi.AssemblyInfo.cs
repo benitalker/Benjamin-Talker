@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AgentsApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4e254af2cfe65162c1f43309ad3974ad464e789e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f611bc8f2f5174dcfb0714d6b63d6ee6ddd88ed")]
 [assembly: System.Reflection.AssemblyProductAttribute("AgentsApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AgentsApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -5,7 +5,7 @@
 namespace AgentsApi.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,7 @@ namespace AgentsApi.Migrations
                     Image = table.Column<string>(type: "nvarchar(225)", maxLength: 225, nullable: false),
                     X = table.Column<int>(type: "int", nullable: false),
                     Y = table.Column<int>(type: "int", nullable: false),
-                    AgentStatus = table.Column<int>(type: "int", nullable: false)
+                    AgentStatus = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,7 +38,7 @@ namespace AgentsApi.Migrations
                     Role = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     X = table.Column<int>(type: "int", nullable: false),
                     Y = table.Column<int>(type: "int", nullable: false),
-                    TargetStatus = table.Column<int>(type: "int", nullable: false)
+                    TargetStatus = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,7 +55,7 @@ namespace AgentsApi.Migrations
                     AgentId = table.Column<long>(type: "bigint", nullable: false),
                     TimeLeft = table.Column<double>(type: "float", nullable: false),
                     ExecutionTime = table.Column<double>(type: "float", nullable: false),
-                    MissionStatus = table.Column<int>(type: "int", nullable: false)
+                    MissionStatus = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -5,19 +5,42 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AgentsApi.Service
 {
-	public class AgentService(ApplicationDbContext context) : IAgentService
+	public class AgentService(IServiceProvider serviceProvider) : IAgentService
 	{
+		private IMissionService missionService => serviceProvider.GetRequiredService<IMissionService>();
+
+		public async Task<List<TargetModel>> GetTargetsForMissions(long agentId)
+		{
+			using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+
+			var agent = await dbContext.Agents.FindAsync(agentId);
+			if (agent == null)
+			{
+				throw new Exception("Agent not found");
+			}
+
+			var targets = await dbContext.Targets
+				.Where(t => t.TargetStatus == TargetStatus.Alive)
+				.ToListAsync();
+
+			return targets
+				.Where(t => missionService.MeasureMissionDistance(t, agent) <= 200)
+				.ToList();
+		}
+
 		public async Task<AgentModel> CreateAgentAsync(AgentDto agentDto)
 		{
 			try
 			{
+				using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+
 				AgentModel agent = new()
 				{
 					Nickname = agentDto.NickName,
 					Image = agentDto.PhotoUrl
 				};
-				await context.Agents.AddAsync(agent);
-				await context.SaveChangesAsync();
+				await dbContext.Agents.AddAsync(agent);
+				await dbContext.SaveChangesAsync();
 				return agent;
 			}
 			catch (Exception ex)
@@ -27,13 +50,18 @@ namespace AgentsApi.Service
 		}
 
 		public async Task<AgentModel?> GetAgentByIdAsync(long id)
-			=> await context.Agents.FindAsync(id);
+		{
+			using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+			return await dbContext.Agents.FindAsync(id);
+		}
 
 		public async Task<IEnumerable<AgentModel>> GetAgentsAsync()
 		{
 			try
 			{
-				var agents = await context.Agents.ToListAsync();
+				using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+
+				var agents = await dbContext.Agents.ToListAsync();
 				return agents;
 			}
 			catch (Exception ex)
@@ -46,14 +74,16 @@ namespace AgentsApi.Service
 		{
 			try
 			{
-				AgentModel? agent = await context.Agents.FirstOrDefaultAsync(t => t.Id == id);
+				using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+
+				AgentModel? agent = await dbContext.Agents.FirstOrDefaultAsync(t => t.Id == id);
 				if (agent == null)
 				{
 					throw new Exception("Target not found");
 				}
 				agent.X = position.X;
 				agent.Y = position.Y;
-				await context.SaveChangesAsync();
+				await dbContext.SaveChangesAsync();
 			}
 			catch (Exception ex)
 			{
@@ -65,7 +95,9 @@ namespace AgentsApi.Service
 		{
 			try
 			{
-				AgentModel? agent = await context.Agents.FirstOrDefaultAsync(t => t.Id == id);
+				using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+
+				AgentModel? agent = await dbContext.Agents.FirstOrDefaultAsync(t => t.Id == id);
 				if (agent == null)
 				{
 					throw new Exception("Agent not found");
@@ -95,13 +127,12 @@ namespace AgentsApi.Service
 
 					return currentAgent;
 				});
-				await context.SaveChangesAsync();
+				await dbContext.SaveChangesAsync();
 			}
 			catch (Exception ex)
 			{
 				throw new Exception(ex.Message);
 			}
 		}
-
 	}
 }
