@@ -5,6 +5,7 @@
     <thead>
         <tr>
             <th>Nickname</th>
+            <th>Image</th>
             <th>Location</th>
             <th>Status</th>
             <th>Mission</th>
@@ -17,6 +18,7 @@
         {
             <tr>
                 <td>@agent.Nickname</td>
+                <td>@Html.Raw($"<img src='{agent.Image}' alt='Image' />")</td>
                 <td>@agent.X, @agent.Y</td>
                 <td>@agent.AgentStatus</td>
                 <td>

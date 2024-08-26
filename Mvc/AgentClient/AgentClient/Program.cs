@@ -16,6 +16,7 @@ namespace AgentClient
 			builder.Services.AddScoped<IGeneralService, GeneralService>();
 			builder.Services.AddScoped<IMissionService, MissionService>();
 			builder.Services.AddScoped<IAgentService, AgentService>();
+			builder.Services.AddScoped<ITargetService, TargetService>();
 
             var app = builder.Build();
 
