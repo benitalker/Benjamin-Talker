@@ -7,7 +7,11 @@ using static AgentClient.Service.MissionService;
 
 namespace AgentClient.Service
 {
-    public class MissionService(IServiceProvider serviceProvider, IHttpClientFactory clientFactory) : IMissionService
+    public class MissionService(
+        IServiceProvider serviceProvider, 
+        IHttpClientFactory clientFactory,
+        IHttpContextAccessor contextAccessor 
+        ) : IMissionService
     {
         private readonly string _baseUrlMissions = "https://localhost:7034/Missions";
         private IGeneralService generalService => serviceProvider.GetRequiredService<IGeneralService>();
@@ -94,47 +98,47 @@ namespace AgentClient.Service
             return null;
         }
 
-        public async Task AssignMissionToAgent(long id)
+        public async Task<bool> AssignMissionToAgent(long id)
         {
             // Create an HttpClient instance using the clientFactory
             var httpClient = clientFactory.CreateClient();
 
-            // Construct the request message
-            using (var request = new HttpRequestMessage(HttpMethod.Put, $"{_baseUrlMissions}/{id}"))
+            // Retrieve the JWT token from the session
+            var jwtToken = contextAccessor.HttpContext?.Session.GetString("JwtToken");
+            if (string.IsNullOrEmpty(jwtToken))
             {
-                try
-                {
-                    // Send the request
-                    var response = await httpClient.SendAsync(request);
+                return false;
+            }
 
-                    // Ensure the request was successful
-                    response.EnsureSuccessStatusCode();
+            // Construct the request message
+            using var request = new HttpRequestMessage(HttpMethod.Put, $"{_baseUrlMissions}/{id}");
+            // Add the Authorization header with the Bearer token
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwtToken);
 
-                    // Read and deserialize the response content
-                    var content = await response.Content.ReadAsStringAsync();
-                    var missionUpdate = JsonConvert.DeserializeObject<MissionUpdateDto>(content);
+            try
+            {
+                // Send the request
+                var response = await httpClient.SendAsync(request);
 
-                    if (missionUpdate == null) 
-                    { 
-                        return;
-                    }
-                    // Use the result (e.g., log it, return it, etc.)
-                    Console.WriteLine($"Mission status updated: {missionUpdate.Status}");
-                }
-                catch (HttpRequestException ex)
+                // Ensure the request was successful
+                response.EnsureSuccessStatusCode();
+
+                // Read and deserialize the response content
+                var content = await response.Content.ReadAsStringAsync();
+                var missionUpdate = JsonConvert.DeserializeObject<MissionUpdateDto>(content);
+
+                if (missionUpdate == null)
                 {
-                    // Handle request-specific exceptions
-                    Console.WriteLine($"Request error: {ex.Message}");
-                    throw;
+                    return false;
                 }
-                catch (Exception ex)
-                {
-                    // Handle other potential exceptions
-                    Console.WriteLine($"An error occurred: {ex.Message}");
-                    throw;
-                }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
+
 
 
         // Utility method to calculate the distance between two points

@@ -1,106 +1,126 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AgentsApi.Data;
 using AgentsApi.Models;
 using AgentsApi.Dto;
-using Microsoft.AspNetCore.Authorization;
 using AgentsApi.Service;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgentsApi.Controllers
 {
-	[Route("[controller]")]
-	[ApiController]
-	public class TargetsController(ITargetService targetService,IServiceProvider serviceProvider) : ControllerBase
-	{
-		private IMissionService missionService => serviceProvider.GetRequiredService<IMissionService>();
+    [Route("[controller]")]
+    [ApiController]
+    public class TargetsController(ITargetService _targetService, IMissionService _missionService) : ControllerBase
+    {
+        // POST: api/Targets
+        [HttpPost]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<long>> Create([FromBody] TargetDto targetDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-		// Post: api/Targets
-		[HttpPost]
-		[ProducesResponseType(StatusCodes.Status201Created)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<ActionResult<long>> Create([FromBody] TargetDto targetDto)
-		{
-			try
-			{
-				var target = await targetService.CreateTargetAsync(targetDto);
-				return Created("succses", new IdDto() { Id = target.Id });
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex);
-			}
-		}
+            try
+            {
+                var target = await _targetService.CreateTargetAsync(targetDto);
+                return CreatedAtAction(nameof(Get), new { id = target.Id }, new IdDto { Id = target.Id });
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the target.");
+            }
+        }
 
-		// GET: api/Targets
-		[HttpGet]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<ActionResult<IEnumerable<TargetModel>>> Get()
-		{
-			try
-			{
-				var targets = await targetService.GetTargetsAsync();
-				return Ok(targets);
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex);
-			}
-		}
+        // GET: api/Targets
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<IEnumerable<TargetModel>>> Get()
+        {
+            try
+            {
+                var targets = await _targetService.GetTargetsAsync();
+                return Ok(targets);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving targets.");
+            }
+        }
 
-		//PUT: /targets/{id}/pin
-		[HttpPut("{id}/pin")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult> Pin(long id, [FromBody] PositionDto position)
-		{
-			try
-			{
-				var targetModel = await targetService.GetTargetByIdAsync(id);
+        // PUT: /targets/{id}/pin
+        [HttpPut("{id}/pin")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> Pin(long id, [FromBody] PositionDto position)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-				if (targetModel == null)
-				{
-					return NotFound();
-				}
-				await targetService.UpdateTargetLocation(id, position);
-				var agents = await targetService.GetAgentsForMissions(id);
-				agents.ForEach(t => missionService.CreateMission(id, t.Id));
-				return Ok();
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex);
-			}
-		}
+            try
+            {
+                var targetExists = await _targetService.GetTargetByIdAsync(id);
+                if (targetExists == null)
+                {
+                    return NotFound($"Target with ID {id} not found.");
+                }
 
-		//PUT:/targets/{id}/move
-		[HttpPut("{id}/move")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult> Move(long id, [FromBody] DirectionsDto direction)
-		{
-			try
-			{
-				var targetModel = await targetService.GetTargetByIdAsync(id);
+                await _targetService.UpdateTargetLocation(id, position);
+                var agents = await _targetService.GetAgentsForMissions(id);
 
-				if (targetModel == null)
-				{
-					return NotFound();
-				}
-				await targetService.MoveTarget(id, direction);
-				var agents = await targetService.GetAgentsForMissions(id);
-				agents.ForEach(t => missionService.CreateMission(id, t.Id));
-				return Ok();
-			}
-			catch
-			{
-				return NotFound();
-			}
-		}
-	}
+                await Task.WhenAll(agents.Select(a => _missionService.CreateMission(id, a.Id)));
+
+                return Ok();
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating the target's location.");
+            }
+        }
+
+        // PUT: /targets/{id}/move
+        [HttpPut("{id}/move")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> Move(long id, [FromBody] DirectionsDto direction)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var targetExists = await _targetService.GetTargetByIdAsync(id);
+                if (targetExists == null)
+                {
+                    return NotFound($"Target with ID {id} not found.");
+                }
+
+                await _targetService.MoveTarget(id, direction);
+                var agents = await _targetService.GetAgentsForMissions(id);
+
+                await Task.WhenAll(agents.Select(a => _missionService.CreateMission(id, a.Id)));
+
+                return Ok();
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while moving the target.");
+            }
+        }
+    }
 }

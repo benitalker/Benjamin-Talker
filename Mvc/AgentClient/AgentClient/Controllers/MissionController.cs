@@ -31,8 +31,15 @@ namespace AgentClient.Controllers
         {
             try
             {
-                await missionService.AssignMissionToAgent(id);
-                return RedirectToAction("Details", new { id = id });
+                var isMissionAssieng = await missionService.AssignMissionToAgent(id);
+                if (isMissionAssieng)
+                {
+                    return RedirectToAction("Details", new { id = id });
+                }
+                else
+                {
+                    return RedirectToAction("LoginError","Login");
+                }
             }
             catch (Exception ex)
             {

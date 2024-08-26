@@ -251,3 +251,4 @@ C:\Users\benit\OneDrive\שולחן העבודה\kodkod2\TESTS\FinalProjectC#\Res
 C:\Users\benit\OneDrive\שולחן העבודה\kodkod2\TESTS\FinalProjectC#\Rest\AgentsApi\AgentsApi\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
 C:\Users\benit\OneDrive\שולחן העבודה\kodkod2\TESTS\FinalProjectC#\Rest\AgentsApi\AgentsApi\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\benit\OneDrive\שולחן העבודה\kodkod2\TESTS\FinalProjectC#\Rest\AgentsApi\AgentsApi\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+C:\Users\benit\OneDrive\שולחן העבודה\kodkod2\TESTS\FinalProjectC#\Rest\AgentsApi\AgentsApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

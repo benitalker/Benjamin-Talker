@@ -6,6 +6,6 @@ namespace AgentClient.Service
     {
         Task<List<MissionVm>> ShowAllMissions();
         Task<MissionVm?> GetMissionDetails(long id);
-        Task AssignMissionToAgent(long id);
+        Task<bool> AssignMissionToAgent(long id);
     }
 }

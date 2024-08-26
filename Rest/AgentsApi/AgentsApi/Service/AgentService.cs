@@ -2,137 +2,103 @@
 using AgentsApi.Dto;
 using AgentsApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AgentsApi.Service
 {
-	public class AgentService(IServiceProvider serviceProvider) : IAgentService
-	{
-		private IMissionService missionService => serviceProvider.GetRequiredService<IMissionService>();
+    public class AgentService(IServiceProvider serviceProvider) : IAgentService
+    {
+        private readonly IServiceProvider _serviceProvider = serviceProvider ?? throw new Exception(nameof(serviceProvider));
+        private readonly IMissionService _missionService = serviceProvider.GetRequiredService<IMissionService>();
 
-		public async Task<List<TargetModel>> GetTargetsForMissions(long agentId)
-		{
-			using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+        public async Task<List<TargetModel>> GetTargetsForMissions(long agentId)
+        {
+            using var dbContext = DbContextFactory.CreateDbContext(_serviceProvider);
+            var agent = await dbContext.Agents.FindAsync(agentId) ?? throw new Exception($"Agent with ID {agentId} not found");
+            var targets = await dbContext.Targets
+                .Where(t => t.TargetStatus == TargetStatus.Alive)
+                .ToListAsync();
 
-			var agent = await dbContext.Agents.FindAsync(agentId);
-			if (agent == null)
-			{
-				throw new Exception("Agent not found");
-			}
+            return targets
+                .Where(t => _missionService.MeasureMissionDistance(t, agent) <= 200)
+                .ToList();
+        }
 
-			var targets = await dbContext.Targets
-				.Where(t => t.TargetStatus == TargetStatus.Alive)
-				.ToListAsync();
+        public async Task<AgentModel> CreateAgentAsync(AgentDto agentDto)
+        {
+            using var dbContext = DbContextFactory.CreateDbContext(_serviceProvider);
+            var agent = new AgentModel
+            {
+                Nickname = agentDto.NickName,
+                Image = agentDto.PhotoUrl
+            };
 
-			return targets
-				.Where(t => missionService.MeasureMissionDistance(t, agent) <= 200)
-				.ToList();
-		}
+            await dbContext.Agents.AddAsync(agent);
+            await dbContext.SaveChangesAsync();
+            return agent;
+        }
 
-		public async Task<AgentModel> CreateAgentAsync(AgentDto agentDto)
-		{
-			try
-			{
-				using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+        public async Task<AgentModel?> GetAgentByIdAsync(long id)
+        {
+            using var dbContext = DbContextFactory.CreateDbContext(_serviceProvider);
+            return await dbContext.Agents.FindAsync(id);
+        }
 
-				AgentModel agent = new()
-				{
-					Nickname = agentDto.NickName,
-					Image = agentDto.PhotoUrl
-				};
-				await dbContext.Agents.AddAsync(agent);
-				await dbContext.SaveChangesAsync();
-				return agent;
-			}
-			catch (Exception ex)
-			{
-				throw new Exception(ex.Message);
-			}
-		}
+        public async Task<IEnumerable<AgentModel>> GetAgentsAsync()
+        {
+            using var dbContext = DbContextFactory.CreateDbContext(_serviceProvider);
+            return await dbContext.Agents.ToListAsync();
+        }
 
-		public async Task<AgentModel?> GetAgentByIdAsync(long id)
-		{
-			using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
-			return await dbContext.Agents.FindAsync(id);
-		}
+        public async Task UpdateAgentLocation(long id, PositionDto position)
+        {
+            using var dbContext = DbContextFactory.CreateDbContext(_serviceProvider);
+            var agent = await dbContext.Agents.FindAsync(id) ?? throw new Exception($"Agent with ID {id} not found");
+            agent.X = position.X;
+            agent.Y = position.Y;
+            await dbContext.SaveChangesAsync();
+        }
 
-		public async Task<IEnumerable<AgentModel>> GetAgentsAsync()
-		{
-			try
-			{
-				using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+        public async Task MoveAgent(long id, DirectionsDto directionDto)
+        {
+            using var dbContext = DbContextFactory.CreateDbContext(_serviceProvider);
+            var agent = await dbContext.Agents.FindAsync(id) ?? throw new Exception($"Agent with ID {id} not found");
+            if (agent.AgentStatus == AgentStatus.Active)
+            {
+                throw new Exception("Agent is active and cannot be moved");
+            }
 
-				var agents = await dbContext.Agents.ToListAsync();
-				return agents;
-			}
-			catch (Exception ex)
-			{
-				throw new Exception(ex.Message);
-			}
-		}
+            agent = directionDto.Direction.ToLower().Aggregate(agent, (currentAgent, direction) =>
+            {
+                var (newX, newY) = GetNewPosition(currentAgent, direction);
+                ValidatePosition(newX, newY);
+                currentAgent.X = newX;
+                currentAgent.Y = newY;
+                return currentAgent;
+            });
 
-		public async Task UpdateAgentLocation(long id, PositionDto position)
-		{
-			try
-			{
-				using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
+            await dbContext.SaveChangesAsync();
+        }
 
-				AgentModel? agent = await dbContext.Agents.FirstOrDefaultAsync(t => t.Id == id);
-				if (agent == null)
-				{
-					throw new Exception("Target not found");
-				}
-				agent.X = position.X;
-				agent.Y = position.Y;
-				await dbContext.SaveChangesAsync();
-			}
-			catch (Exception ex)
-			{
-				throw new Exception(ex.Message);
-			}
-		}
+        private static (int, int) GetNewPosition(AgentModel agent, char direction) => direction switch
+        {
+            'w' => (agent.X - 1, agent.Y),
+            'e' => (agent.X + 1, agent.Y),
+            's' => (agent.X, agent.Y - 1),
+            'n' => (agent.X, agent.Y + 1),
+            _ => throw new Exception($"Invalid direction character: {direction}")
+        };
 
-		public async Task MoveAgent(long id, DirectionsDto directionDto)
-		{
-			try
-			{
-				using var dbContext = DbContextFactory.CreateDbContext(serviceProvider);
-
-				AgentModel? agent = await dbContext.Agents.FirstOrDefaultAsync(t => t.Id == id);
-				if (agent == null)
-				{
-					throw new Exception("Agent not found");
-				}
-				if(agent.AgentStatus == AgentStatus.Active)
-				{
-					throw new Exception("Agent is active");
-				}
-				var newAgent = directionDto.Direction.ToLower().Aggregate(agent, (currentAgent, direction) =>
-				{
-					(int newX, int newY) = direction switch
-					{
-						'w' => (currentAgent.X - 1, currentAgent.Y),
-						'e' => (currentAgent.X + 1, currentAgent.Y),
-						's' => (currentAgent.X, currentAgent.Y - 1),
-						'n' => (currentAgent.X, currentAgent.Y + 1),
-						_ => throw new Exception($"Invalid direction character: {currentAgent.X} {currentAgent.Y}")
-					};
-
-					if (newX < 0 || newX > 1000 || newY < 0 || newY > 1000)
-					{
-						throw new Exception($"Movement out of bounds: ({newX}, {newY})");
-					}
-
-					currentAgent.X = newX;
-					currentAgent.Y = newY;
-
-					return currentAgent;
-				});
-				await dbContext.SaveChangesAsync();
-			}
-			catch (Exception ex)
-			{
-				throw new Exception(ex.Message);
-			}
-		}
-	}
+        private static void ValidatePosition(int x, int y)
+        {
+            if (x < 0 || x > 1000 || y < 0 || y > 1000)
+            {
+                throw new Exception($"Movement out of bounds: ({x}, {y})");
+            }
+        }
+    }
 }

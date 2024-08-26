@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Login Error";
+}
+
+<h2>Login Error</h2>
+
+<div class="alert alert-danger" role="alert">
+    An error occurred during login. Please try again.
+</div>
+
+<a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Return to Home</a>
+<a href="@Url.Action("Index", "Login")" class="btn btn-primary">Try Again</a>
