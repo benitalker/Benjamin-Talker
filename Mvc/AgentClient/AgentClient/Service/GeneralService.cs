@@ -5,32 +5,26 @@ using AgentClient.ViewModel;
 
 namespace AgentClient.Service
 {
-    public class GeneralService : IGeneralService
+    public class GeneralService(IHttpClientFactory _clientFactory) : IGeneralService
     {
-        private readonly IHttpClientFactory _clientFactory;
         private readonly string _baseUrlAgents = "https://localhost:7034/Agents";
         private readonly string _baseUrlTargets = "https://localhost:7034/Targets";
         private readonly string _baseUrlMissions = "https://localhost:7034/Missions";
 
-        public GeneralService(IHttpClientFactory clientFactory)
-        {
-            _clientFactory = clientFactory;
-        }
+        
 
-        public async Task<List<AgentModel?>> GetAllAgentsAsync()
+        public async Task<List<AgentModel>> GetAllAgentsAsync()
         {
             var httpClient = _clientFactory.CreateClient();
             var request = new HttpRequestMessage(HttpMethod.Get, _baseUrlAgents);
             var result = await httpClient.SendAsync(request);
 
-            if (result.IsSuccessStatusCode)
-            {
-                var content = await result.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<List<AgentModel>>(
-                    content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<AgentModel?>();
-            }
-
-            return new List<AgentModel?>();
+            return result.IsSuccessStatusCode
+                ? JsonSerializer.Deserialize<List<AgentModel>>(
+                        await result.Content.ReadAsStringAsync(),
+                        new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }
+                    ) ?? []
+                : [];
         }
 
         public async Task<List<TargetModel?>> GetAllTargetsAsync()
@@ -49,20 +43,16 @@ namespace AgentClient.Service
             return new List<TargetModel?>();
         }
 
-        public async Task<List<MissionModel?>> GetAllMissionsAsync()
+        public async Task<List<MissionModel>> GetAllMissionsAsync()
         {
             var httpClient = _clientFactory.CreateClient();
             var request = new HttpRequestMessage(HttpMethod.Get, _baseUrlMissions);
             var result = await httpClient.SendAsync(request);
 
-            if (result.IsSuccessStatusCode)
-            {
-                var content = await result.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<List<MissionModel>>(
-                    content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<MissionModel?>();
-            }
-
-            return new List<MissionModel?>();
+            return result.IsSuccessStatusCode ? 
+             JsonSerializer.Deserialize<List<MissionModel>>(
+                    await result.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? [] 
+                    : [];
         }
 
         public async Task<GeneralVM> GetGeneralStatisticsAsync()

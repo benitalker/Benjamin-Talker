@@ -4,11 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Missions</h1>
 
 <table class="table">
     <thead>
@@ -19,6 +15,7 @@
             <th>@Html.DisplayNameFor(model => model.TargetName)</th>
             <th>@Html.DisplayNameFor(model => model.TargetX)</th>
             <th>@Html.DisplayNameFor(model => model.TargetY)</th>
+            <th>@Html.DisplayNameFor(model => model.MissionStatus)</th>
             <th>@Html.DisplayNameFor(model => model.MissionDistance)</th>
             <th>@Html.DisplayNameFor(model => model.MissionTimeLeft)</th>
             <th></th>
@@ -34,8 +31,13 @@
                 <td>@Html.DisplayFor(modelItem => item.TargetName)</td>
                 <td>@Html.DisplayFor(modelItem => item.TargetX)</td>
                 <td>@Html.DisplayFor(modelItem => item.TargetY)</td>
+                <td>@Html.DisplayFor(modelItem => item.MissionStatus)</td>
                 <td>@Html.DisplayFor(modelItem => item.MissionDistance)</td>
                 <td>@Html.DisplayFor(modelItem => item.MissionTimeLeft)</td>
+                @if(!(item.MissionStatus == MissionStatus.OnTask))
+                {
+                <td>@Html.ActionLink("AssignMission", "AssignMission", new { id = item.Id }) | </td>
+                }
                 <td>@Html.ActionLink("Details", "Details", new { id = item.Id })</td>
             </tr>
         }

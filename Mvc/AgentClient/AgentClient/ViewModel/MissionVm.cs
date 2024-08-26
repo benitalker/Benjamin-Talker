@@ -1,4 +1,6 @@
-﻿namespace AgentClient.ViewModel
+﻿using AgentClient.Models;
+
+namespace AgentClient.ViewModel
 {
     public class MissionVm
     {
@@ -9,6 +11,7 @@
         public string TargetName { get; set; } = string.Empty;
         public int TargetX { get; set; }
         public int TargetY { get; set; }
+        public MissionStatus MissionStatus { get; set; }
         public double MissionDistance { get; set; }
         public double MissionTimeLeft { get; set; }
     }

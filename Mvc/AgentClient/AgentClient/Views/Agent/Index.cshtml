@@ -1,0 +1,37 @@
+﻿@model List<AgentClient.ViewModel.AgentVm>
+
+<h2>Agents</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nickname</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Mission</th>
+            <th>Time to Eliminate</th>
+            <th>Kills</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var agent in Model)
+        {
+            <tr>
+                <td>@agent.Nickname</td>
+                <td>@agent.X, @agent.Y</td>
+                <td>@agent.AgentStatus</td>
+                <td>
+                    @if (agent.MissionId > 0)
+                    {
+                        <a href="@Url.Action("Details", "Mission", new { id = agent.MissionId })">View Mission</a>
+                    }
+                    else
+                    {
+                        @:No Active Mission
+                    }
+                </td>
+                <td>@(agent.TimeToElimanate > 0 ? $"{agent.TimeToElimanate} hours" : "N/A")</td>
+                <td>@agent.NumOfKills</td>
+            </tr>
+        }
+    </tbody>
+</table>
