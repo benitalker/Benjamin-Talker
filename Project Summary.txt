@@ -1,0 +1,20 @@
+Project Summary
+
+The system architecture consists of a RESTful server, an MVC client, and an external simulation server. The RESTful server handles requests from two main clients, processes these requests, and performs the required operations.
+
+Key Models:
+The primary models in the system are Agent, Target, and Mission. These models interact with each other as described in the system's diagram. The data for these models is retrieved from the database using DbContext and then passed to the corresponding service layer.
+
+Structure:
+Each model has its own Controller and Service. All business logic is implemented within the services, while the controllers handle data requests and responses. The system also includes DTO (Data Transfer Object) models, which are used to process incoming requests and convert them into actionable operations.
+
+MVC Client:
+The MVC application sends requests to the server to retrieve data and displays this data using View Models. These view models may be complex, combining multiple models. The MVC application is also divided into controllers and services, but it does not directly interact with a database since data is fetched from the RESTful server and transformed into view models for presentation.
+
+Additional Features:
+I successfully integrated JWT (JSON Web Token) authentication into the system, allowing for secure user authentication and authorization. The tokens are efficiently utilized to ensure secure communication between the client and server.
+
+Challenges Encountered:
+Service Registration: It was common to forget to register services with the correct scope in the Program.cs, which led to issues during runtime.
+JSON Deserialization: Converting JSON data into objects required precise mapping, and sometimes errors were difficult to trace due to slight mismatches in the property names or types.
+Token Handling: The JWT token sent from the MVC client arrived in JSON format, and to use it on the server, it needed to be extracted and converted into a string correctly.
