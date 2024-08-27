@@ -30,26 +30,5 @@ namespace AgentClient.Controllers
         {
             return View();
         }
-
-        /*public async Task<ActionResult<string>> AfterLogin()
-        {
-            var token = HttpContext.Session.GetString("JwtToken");
-            if (token == null) { return BadRequest("Not authenticated"); }
-
-            var httpClient = clientFactory.CreateClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{loginApi}/protected");
-            request.Headers.Authorization =
-                new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await httpClient.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var content = response.Content.ReadAsStringAsync();
-                return Ok(content);
-            }
-            return BadRequest();
-        }*/
     }
-
 }

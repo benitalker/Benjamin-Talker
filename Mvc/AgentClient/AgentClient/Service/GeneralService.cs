@@ -1,5 +1,9 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 using AgentClient.Models;
 using AgentClient.ViewModel;
 
@@ -7,86 +11,64 @@ namespace AgentClient.Service
 {
     public class GeneralService(IHttpClientFactory _clientFactory) : IGeneralService
     {
-        private readonly string _baseUrlAgents = "https://localhost:7034/Agents";
-        private readonly string _baseUrlTargets = "https://localhost:7034/Targets";
-        private readonly string _baseUrlMissions = "https://localhost:7034/Missions";
+        private const string BaseUrlAgents = "https://localhost:7034/Agents";
+        private const string BaseUrlTargets = "https://localhost:7034/Targets";
+        private const string BaseUrlMissions = "https://localhost:7034/Missions";
 
-        
+        private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
 
-        public async Task<List<AgentModel>> GetAllAgentsAsync()
+        public async Task<List<AgentModel>> GetAllAgentsAsync() =>
+            await FetchDataAsync<List<AgentModel>>(BaseUrlAgents);
+
+        public async Task<List<TargetModel>> GetAllTargetsAsync() =>
+            await FetchDataAsync<List<TargetModel>>(BaseUrlTargets);
+
+        public async Task<List<MissionModel>> GetAllMissionsAsync() =>
+            await FetchDataAsync<List<MissionModel>>(BaseUrlMissions);
+
+        private async Task<T> FetchDataAsync<T>(string url) where T : new()
         {
-            var httpClient = _clientFactory.CreateClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, _baseUrlAgents);
-            var result = await httpClient.SendAsync(request);
+            using var httpClient = _clientFactory.CreateClient();
+            var response = await httpClient.GetAsync(url);
 
-            return result.IsSuccessStatusCode
-                ? JsonSerializer.Deserialize<List<AgentModel>>(
-                        await result.Content.ReadAsStringAsync(),
-                        new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }
-                    ) ?? []
-                : [];
-        }
-
-        public async Task<List<TargetModel?>> GetAllTargetsAsync()
-        {
-            var httpClient = _clientFactory.CreateClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, _baseUrlTargets);
-            var result = await httpClient.SendAsync(request);
-
-            if (result.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                var content = await result.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<List<TargetModel>>(
-                    content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<TargetModel?>();
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<T>(content, JsonOptions) ?? new T();
             }
 
-            return new List<TargetModel?>();
-        }
-
-        public async Task<List<MissionModel>> GetAllMissionsAsync()
-        {
-            var httpClient = _clientFactory.CreateClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, _baseUrlMissions);
-            var result = await httpClient.SendAsync(request);
-
-            return result.IsSuccessStatusCode ? 
-             JsonSerializer.Deserialize<List<MissionModel>>(
-                    await result.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? [] 
-                    : [];
+            return new T();
         }
 
         public async Task<GeneralVM> GetGeneralStatisticsAsync()
         {
-            var generalVM = new GeneralVM();
+            var agentsTask = GetAllAgentsAsync();
+            var targetsTask = GetAllTargetsAsync();
+            var missionsTask = GetAllMissionsAsync();
 
-            // Get Agents data
-            var totalAgents = await GetAllAgentsAsync();
-            generalVM.NumOfAgents = totalAgents.Count;
-            generalVM.NumOfActiveAgents = totalAgents.Count(a => a?.AgentStatus == AgentStatus.Active);
+            await Task.WhenAll(agentsTask, targetsTask, missionsTask);
 
-            var numOfDormantAgents = totalAgents.Count(a => a?.AgentStatus == AgentStatus.Dormant);
+            var agents = await agentsTask;
+            var targets = await targetsTask;
+            var missions = await missionsTask;
 
-            // Get Targets data
-            var totalTargets = await GetAllTargetsAsync();
-            generalVM.NumOfTargets = totalTargets.Count;
-            generalVM.NumOfDeadTargets = totalTargets.Count(t => t?.TargetStatus == TargetStatus.Dead);
+            int numOfDormantAgents = agents.Count(a => a.AgentStatus == AgentStatus.Dormant);
+            int numOfAliveTargets = targets.Count(t => t.TargetStatus == TargetStatus.Alive);
 
-            var numOfAliveTargets = totalTargets.Count(t => t?.TargetStatus == TargetStatus.Alive);
-
-            // Get Missions data
-            var totalMissions = await GetAllMissionsAsync();
-            generalVM.NumOfMissions = totalMissions.Count;
-            generalVM.NumOfActiveMissions = totalMissions.Count(m => m?.MissionStatus == MissionStatus.OnTask);
-
-            // Calculate Agent to Target ratio
-            generalVM.AgentToTargetRatio = generalVM.NumOfTargets > 0 ?
-                (double)generalVM.NumOfAgents / generalVM.NumOfTargets : 0;
-
-            // Calculate Dormant Agents to Target ratio
-            generalVM.DormentAgentsToTargetRatio = generalVM.NumOfTargets > 0 ?
-                (double)numOfDormantAgents / (double)numOfAliveTargets : 0;
-
-            return generalVM;
+            return new GeneralVM
+            {
+                NumOfAgents = agents.Count,
+                NumOfActiveAgents = agents.Count(a => a.AgentStatus == AgentStatus.Active),
+                NumOfTargets = targets.Count,
+                NumOfDeadTargets = targets.Count(t => t.TargetStatus == TargetStatus.Dead),
+                NumOfMissions = missions.Count,
+                NumOfActiveMissions = missions.Count(m => m.MissionStatus == MissionStatus.OnTask),
+                AgentToTargetRatio = CalculateRatio(agents.Count, targets.Count),
+                DormentAgentsToTargetRatio = CalculateRatio(numOfDormantAgents, numOfAliveTargets)
+            };
         }
+
+        private static double CalculateRatio(int numerator, int denominator) =>
+            denominator > 0 ? (double)numerator / denominator : 0;
     }
 }

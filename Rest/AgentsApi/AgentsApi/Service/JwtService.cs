@@ -28,16 +28,24 @@ namespace AgentsApi.Service
                 claims: claims,
                 signingCredentials: credentials
             );
-
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
         public bool ValidateToken(string authToken)
         {
+            if (string.IsNullOrEmpty(authToken)) { return false; }
             var tokenHandler = new JwtSecurityTokenHandler();
             var validationParameters = GetValidationParameters();
-
             SecurityToken validatedToken;
-            IPrincipal principal = tokenHandler.ValidateToken(authToken, validationParameters, out validatedToken);
+            try
+            {
+                IPrincipal principal = tokenHandler
+                    .ValidateToken(authToken, validationParameters, out validatedToken);
+            }
+            catch
+            {
+                return false;
+            }
             return true;
         }
 
@@ -56,6 +64,5 @@ namespace AgentsApi.Service
                  )
             };
         }
-
     }
 }

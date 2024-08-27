@@ -1,34 +1,34 @@
 ﻿using AgentClient.Models;
 using AgentClient.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
-using System.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AgentClient.Service
 {
-    public class TargetService(IServiceProvider serviceProvider) : ITargetService
+    public class TargetService(IServiceProvider _serviceProvider) : ITargetService
     {
-        private IGeneralService generalService => serviceProvider.GetRequiredService<IGeneralService>();
+        private IGeneralService GeneralService => _serviceProvider.GetRequiredService<IGeneralService>();
 
         public async Task<List<TargetVm>> GetAllTargetsDetails()
         {
-            var targets = await generalService.GetAllTargetsAsync();
+            var targets = await GeneralService.GetAllTargetsAsync();
+            return targets.Select(CreateTargetVm).ToList();
+        }
 
-            var result = new List<TargetVm>();
-
-            foreach (var target in targets)
+        private static TargetVm CreateTargetVm(TargetModel target)
+        {
+            return new TargetVm
             {
-                result.Add(new TargetVm
-                {
-                    Name = target.Name,
-                    Image = target.Image,
-                    Role = target.Role,
-                    X = target.X,
-                    Y = target.Y,
-                    TargetStatus = target.TargetStatus
-                });
-            }
-
-            return result;
+                Name = target.Name,
+                Image = target.Image,
+                Role = target.Role,
+                X = target.X,
+                Y = target.Y,
+                TargetStatus = target.TargetStatus
+            };
         }
     }
 }

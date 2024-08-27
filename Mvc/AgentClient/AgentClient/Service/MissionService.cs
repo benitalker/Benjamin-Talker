@@ -1,9 +1,10 @@
 ﻿using AgentClient.Models;
 using AgentClient.ViewModel;
 using AgentClient.Dto;
-using Newtonsoft.Json;
+
 using System.Text.Json;
-using static AgentClient.Service.MissionService;
+
+
 
 namespace AgentClient.Service
 {
@@ -109,11 +110,15 @@ namespace AgentClient.Service
             {
                 return false;
             }
+            var tokenDto = JsonSerializer.Deserialize<TokenDto>(
+                jwtToken, 
+                new JsonSerializerOptions () { PropertyNameCaseInsensitive = true }
+            );
 
             // Construct the request message
             using var request = new HttpRequestMessage(HttpMethod.Put, $"{_baseUrlMissions}/{id}");
             // Add the Authorization header with the Bearer token
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwtToken);
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenDto.Token);
 
             try
             {
@@ -125,7 +130,7 @@ namespace AgentClient.Service
 
                 // Read and deserialize the response content
                 var content = await response.Content.ReadAsStringAsync();
-                var missionUpdate = JsonConvert.DeserializeObject<MissionUpdateDto>(content);
+                var missionUpdate = JsonSerializer.Deserialize<MissionUpdateDto>(content);
 
                 if (missionUpdate == null)
                 {

@@ -1,105 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\mvc\\agentclient\\agentclient\\service\\missionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|solutionrelative:agentclient\\service\\missionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\mvc\\agentclient\\agentclient\\service\\loginservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|solutionrelative:agentclient\\service\\loginservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\mvc\\agentclient\\agentclient\\controllers\\missioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|solutionrelative:agentclient\\controllers\\missioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\mvc\\agentclient\\agentclient\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|solutionrelative:agentclient\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|c:\\users\\benit\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\tests\\finalprojectc#\\mvc\\agentclient\\agentclient\\service\\iloginservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{38B2EC7F-7533-468F-9358-37C94D28E42A}|AgentClient\\AgentClient.csproj|solutionrelative:agentclient\\service\\iloginservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 176,
-          "SelectedChildIndex": 1,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "MissionController.cs",
-              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Controllers\\MissionController.cs",
-              "RelativeDocumentMoniker": "AgentClient\\Controllers\\MissionController.cs",
-              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Controllers\\MissionController.cs",
-              "RelativeToolTip": "AgentClient\\Controllers\\MissionController.cs",
-              "ViewState": "AQIAACAAAAAAAAAAAAAQwC8AAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-26T14:47:11.183Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MissionService.cs",
-              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Service\\MissionService.cs",
-              "RelativeDocumentMoniker": "AgentClient\\Service\\MissionService.cs",
-              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Service\\MissionService.cs",
-              "RelativeToolTip": "AgentClient\\Service\\MissionService.cs",
-              "ViewState": "AQIAAA0AAAAAAAAAAAAUwGcAAAAMAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-26T14:38:40.752Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "LoginService.cs",
-              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Service\\LoginService.cs",
-              "RelativeDocumentMoniker": "AgentClient\\Service\\LoginService.cs",
-              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Service\\LoginService.cs",
-              "RelativeToolTip": "AgentClient\\Service\\LoginService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-26T13:46:18.091Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ILoginService.cs",
-              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Service\\ILoginService.cs",
-              "RelativeDocumentMoniker": "AgentClient\\Service\\ILoginService.cs",
-              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Service\\ILoginService.cs",
-              "RelativeToolTip": "AgentClient\\Service\\ILoginService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAwAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-26T13:46:02.59Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "LoginController.cs",
-              "DocumentMoniker": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Controllers\\LoginController.cs",
-              "RelativeDocumentMoniker": "AgentClient\\Controllers\\LoginController.cs",
-              "ToolTip": "C:\\Users\\benit\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\kodkod2\\TESTS\\FinalProjectC#\\Mvc\\AgentClient\\AgentClient\\Controllers\\LoginController.cs",
-              "RelativeToolTip": "AgentClient\\Controllers\\LoginController.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAABkAAAAyAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-26T12:14:52.397Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }
